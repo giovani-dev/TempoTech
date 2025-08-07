@@ -7,6 +7,7 @@ from tempotech.core.schemas.pagination_schema import Pagination
 
 # TODO: QUal é o jeito correto de tipar um metodo asyncrono?
 class ILocationProvider(ABC):
+    country: str
 
     @abstractmethod
     async def list_states(self) -> AsyncGenerator[Location]:

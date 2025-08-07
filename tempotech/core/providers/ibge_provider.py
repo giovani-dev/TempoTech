@@ -14,6 +14,9 @@ class IBGEProvider(ILocationProvider):
         "https://servicodados.ibge.gov.br/api/v1/localidades/estados/{UF}/municipios"
     )
 
+    def __init__(self):
+        self.country = "BR"
+
     async def list_states(self) -> AsyncGenerator[Location]:
         async with aiohttp.ClientSession() as session:
             async with session.get(self.IBGE_ESTATE_LOCATION) as response:

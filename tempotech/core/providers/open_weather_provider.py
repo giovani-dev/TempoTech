@@ -11,6 +11,9 @@ from tempotech.core.schemas.pagination_schema import Pagination
 class OpenWeatherProvider(ILocationProvider):
     GEOCODING_URL = "http://api.openweathermap.org/geo/1.0/direct?q={city_name},{state_code},{country_code}&limit={limit}&appid={API_key}"
 
+    def __init__(self):
+        self.country = "BR"
+
     async def list_states(self) -> AsyncGenerator[Location]:
         raise NotImplementedError
 

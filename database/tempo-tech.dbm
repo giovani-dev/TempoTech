@@ -5,17 +5,124 @@ CAUTION: Do not modify this file unless you know what you are doing.
 -->
 <dbmodel pgmodeler-ver="1.2.0" use-changelog="false" max-obj-count="4"
 	 gen-disabled-objs-code="false" show-sys-schemas-rects="true"
-	 last-position="0,47" last-zoom="1"
+	 last-position="191,-30" last-zoom="1" scene-rect="0,-30,1714.93,1106.8"
 	 default-schema="public" default-owner="postgres"
 	 layers="Default layer"
 	 active-layers="0"
 	 layer-name-colors="#000000"
 	 layer-rect-colors="#b4b4b4"
 	 show-layer-names="false" show-layer-rects="false">
-<database name="new_database" is-template="false" allow-conns="true">
+<database name="tempotech-db" is-template="false" allow-conns="true">
 </database>
 
 <schema name="public" layers="0" fill-color="#e1e1e1" name-color="#000000" sql-disabled="true">
 </schema>
+
+<schema name="tempotech" layers="0" rect-visible="true" fill-color="#e1e1e1" name-color="#31363b">
+	<role name="postgres"/>
+</schema>
+
+<table name="Location" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="tempotech"/>
+	<role name="postgres"/>
+	<position x="540" y="400"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="country">
+		<type name="char" length="2"/>
+	</column>
+	<column name="stateName">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="state">
+		<type name="char" length="2"/>
+	</column>
+	<column name="city_name">
+		<type name="varchar" length="50"/>
+	</column>
+	<column name="lat">
+		<type name="float" length="0"/>
+	</column>
+	<column name="lon">
+		<type name="float" length="0"/>
+	</column>
+	<constraint name="location_pk" type="pk-constr" table="tempotech.&quot;Location&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Weather" layers="0" collapse-mode="2" max-obj-count="9" z-value="0">
+	<schema name="tempotech"/>
+	<role name="postgres"/>
+	<position x="860" y="400"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="currentTemperature">
+		<type name="numeric" length="0"/>
+	</column>
+	<column name="feelsLikeTemperature">
+		<type name="numeric" length="0"/>
+	</column>
+	<column name="minTemperature">
+		<type name="numeric" length="0"/>
+	</column>
+	<column name="maxTemperature">
+		<type name="numeric" length="0"/>
+	</column>
+	<column name="humidity">
+		<type name="numeric" length="0"/>
+	</column>
+	<column name="windSpeed">
+		<type name="numeric" length="0"/>
+	</column>
+	<column name="timestampUtc">
+		<type name="timestamp" length="0"/>
+	</column>
+	<constraint name="Weather_pk" type="pk-constr" table="tempotech.&quot;Weather&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="WeatherLocation" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="tempotech"/>
+	<role name="postgres"/>
+	<position x="720" y="100"/>
+</table>
+
+<relationship name="Location_has_weather" type="rel1n" layers="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 fk-idx-pattern="{st}_idx"
+	 custom-color="#044c8b"
+	 src-table="tempotech.&quot;Location&quot;"
+	 dst-table="tempotech.&quot;WeatherLocation&quot;"
+	 src-required="true" dst-required="false"
+	 identifier="true"
+>
+	<label ref-type="name-label">
+		<position x="-107.617" y="-45.6485"/>
+	</label>
+</relationship>
+
+<relationship name="Weather_has_location" type="rel1n" layers="0"
+	 src-col-pattern="{sc}_{st}"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 fk-idx-pattern="{st}_idx"
+	 custom-color="#0f1aed"
+	 src-table="tempotech.&quot;Weather&quot;"
+	 dst-table="tempotech.&quot;WeatherLocation&quot;"
+	 src-required="true" dst-required="false"
+	 identifier="true"
+>
+	<label ref-type="name-label">
+		<position x="103.919" y="-35.6485"/>
+	</label>
+</relationship>
 
 </dbmodel>
