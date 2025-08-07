@@ -16,6 +16,7 @@ API_VERSION = "v1"
 
 @asynccontextmanager
 async def lifesplan(app: FastAPI) -> AsyncIterator[None]:
+    # TODO: validar se os estados de um pais estão cadastrados no banco -> fazer no startup da aplicação
     redis = await aioredis.from_url(
         f"redis://{config.REDIS_HOST}:{config.REDIS_PORT}",
         encoding="utf-8",

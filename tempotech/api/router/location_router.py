@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from fastapi_cache.decorator import cache
+from typing import Literal
 
 from tempotech.core.schemas.location_schema import Location
 from tempotech.core.schemas.pagination_schema import Pagination
@@ -9,7 +10,7 @@ router = APIRouter(tags=["Location"])
 
 @router.get("/state")
 @cache(expire=600)
-async def get_states() -> Pagination[Location]:
+async def get_states(order_by: Literal["state_name", "city_name"], page: int = 1) -> Pagination[Location]:
     """
     Returns a list of all states.
 

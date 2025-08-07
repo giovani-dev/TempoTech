@@ -12,5 +12,5 @@ class LocationModel(SQLModel, table=True):
     country: str
     latitude: float
     longitude: float
-    created_at: datetime = Field(alias="createdAt", default=datetime.now)
+    created_at: datetime = Field(alias="createdAt", default_factory=datetime.now)
     updated_at: Optional[datetime] = Field(alias="updatedAt", default=None)

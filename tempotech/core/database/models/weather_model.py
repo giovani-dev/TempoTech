@@ -13,5 +13,5 @@ class WeatherModel(SQLModel, table=True):
     humidity: float = Field(alias="humidity")
     wind_speed: float = Field(alias="windSpeed")
     timestamp_utc: datetime = Field(alias="timestampUtc")
-    created_at: datetime = Field(alias="createdAt", default=datetime.now)
+    created_at: datetime = Field(alias="createdAt", default_factory=datetime.now)
     updated_at: Optional[datetime] = Field(alias="updatedAt", default=None)
