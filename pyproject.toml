@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "tempotech"
+version = "1.0.0"
+description = ""
+authors = ["Giovani Liskoski Zanini <giovanilzanini@hotmail.com>"]
+license = "GPL-3.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.11"
+fastapi-limiter = "^0.1.6"
+uvicorn = "^0.35.0"
+aiohttp = "^3.12.15"
+aiodns = "^3.5.0"
+python-dotenv = "^1.1.1"
+fastapi-cache2 = {extras = ["redis"], version = "^0.2.2"}
+loguru = "^0.7.3"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
+pylint = "^3.3.7"
+isort = "^6.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
