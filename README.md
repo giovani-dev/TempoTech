@@ -46,45 +46,55 @@ A estrutura de diretórios é organizada para refletir a arquitetura "Ports and 
       - **`use_case`**: Contém a lógica de negócios encapsulada, como a busca de cidades e estados.
   - **`docker`**: Contém a configuração do Docker Compose para os serviços Redis e PostgreSQL.
 
-### Como Rodar o Projeto Localmente
+### Como Rodar o Projeto com Docker
 
-1.  **Pré-requisitos**:
+Esta seção descreve como inicializar a aplicação e seus serviços dependentes usando Docker.
 
-      - Docker e Docker Compose instalados.
-      - Python 3.10 instalado.
+#### Usando Docker Compose (Método Recomendado)
 
-2.  **Configuração do Ambiente**:
+O `docker-compose.yml` está configurado para orquestrar todos os serviços necessários (a aplicação, o banco de dados PostgreSQL e o Redis) com um único comando. O arquivo `docker-compose.yml` e o `Dockerfile` devem estar na pasta `docker`, enquanto os arquivos de configuração do projeto estão na raiz.
 
-      - Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis de ambiente, conforme especificado em `tempotech/core/config.py`:
-        ```
-        REDIS_HOST="redis"
-        REDIS_PORT="6379"
-        REDIS_USER="developer"
-        REDIS_PWD="abc@123"
+1.  **A partir do diretório raiz do projeto**, execute o seguinte comando para construir e iniciar os containers:
+    ```sh
+    docker compose -f docker/docker-compose.yml up --build
+    ```
+      - O comando `up` cria e inicia todos os serviços definidos no arquivo.
+      - A flag `-f docker/docker-compose.yml` especifica o caminho para o arquivo de configuração.
+      - A flag `--build` garante que a imagem da sua aplicação seja construída a partir do `Dockerfile` antes de iniciar o container.
 
-        OPEN_WEATHER_API_KEY="SUA_CHAVE_API_AQUI" # Obtenha sua chave da API OpenWeatherMap
+#### Usando Comandos Docker Nativos
 
-        DB_ENGINE="POSTGRESQL"
-        DB_USER="weather"
-        DB_PWD="root@pwd123"
-        DB_HOST="db"
-        DB_PORT="5432"
-        DB_NAME="tempotech-db"
-        ```
+Se preferir gerenciar os containers manualmente, você pode construir e executar a imagem da sua aplicação separadamente. Note que você precisará garantir que o banco de dados e o Redis estejam em execução e acessíveis.
 
-3.  **Execução com Docker Compose**:
-
-      - Execute o seguinte comando para subir os contêineres do Redis, PostgreSQL e a aplicação:
-        ```bash
-        docker compose up --build
-        ```
-      - O banco de dados PostgreSQL será configurado com o usuário `weather` e a senha `root@pwd123`, e o banco de dados `tempotech-db`.
-      - O Redis será configurado com o usuário `developer` e a senha `abc@123`.
-
-### Decisões de Design e Arquitetura
-
-  - **Arquitetura "Ports and Adapters"**: A principal motivação para esta arquitetura é separar a lógica de negócios do restante do código, facilitando a manutenção e a substituição de dependências externas.
-  - **Background Tasks**: O projeto opta por usar `BackgroundTasks` do FastAPI em vez do Celery para a task de inicialização do banco de dados (`setup_db`). Esta decisão foi tomada para manter a simplicidade do projeto, visto que o Celery seria uma solução excessivamente complexa para o caso de uso atual.
+1.  **Construa a imagem da aplicação:**
+    Execute o comando abaixo a partir do diretório raiz do projeto. Isso usará o `Dockerfile` na pasta `docker` para criar uma imagem chamada `tempo-tech-app`.
+    ```sh
+    docker build -t tempo-tech-app -f docker/Dockerfile .
+    ```
+2.  **Inicie os serviços de dependência (PostgreSQL e Redis):**
+    A forma mais simples é usar o Docker Compose para iniciar apenas os serviços `db` e `redis`.
+    ```sh
+    docker compose -f docker/docker-compose.yml up db redis -d
+    ```
+3.  **Execute o container da aplicação:**
+    Execute o comando a seguir, substituindo `"SUA_CHAVE_API_AQUI"` com sua chave real da API OpenWeatherMap. As variáveis de ambiente devem ser passadas manualmente.
+    ```sh
+    docker run --name tempo-tech-app-container \
+      -p 8080:8080 \
+      --network tempotech_tempo-tech-network \
+      -e REDIS_HOST="redis-server" \
+      -e REDIS_PORT="6379" \
+      -e REDIS_USER="developer" \
+      -e REDIS_PWD="abc@123" \
+      -e OPEN_WEATHER_API_KEY="SUA_CHAVE_API_AQUI" \
+      -e DB_ENGINE="POSTGRESQL" \
+      -e DB_USER="weather" \
+      -e DB_PWD="root@pwd123" \
+      -e DB_HOST="postgres-server" \
+      -e DB_PORT="5432" \
+      -e DB_NAME="tempotech-db" \
+      tempo-tech-app
+    ```
 
 ### Licença
 

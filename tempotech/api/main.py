@@ -12,7 +12,7 @@ from redis import asyncio as aioredis
 from tempotech.api.router import location_router, weather_router
 from tempotech.core import config
 from tempotech.core.database.repository.postgres.connection_repository import (
-    ConnectionRepository,
+    ConnectionRepositoryV2,
 )
 from tempotech.core.database.repository.postgres.location_repository import (
     LocationRepository,
@@ -24,7 +24,7 @@ API_VERSION = "v1"
 
 
 async def setup_db():
-    async with ConnectionRepository.connect() as session:
+    async with ConnectionRepositoryV2.connect() as session:
         await CreateLocationUseCase(
             location_db=LocationRepository(session), location_provider=coutry_provider
         ).execute()

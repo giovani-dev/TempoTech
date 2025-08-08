@@ -1,6 +1,22 @@
-name: "todo-app"
+name: "tempotech"
 
 services:
+
+  # TODO: Arrumar build do container
+  # app:
+  #   build:
+  #     context: ../
+  #     dockerfile: docker/Dockerfile
+  #   container_name: tempo-tech-app
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - ./:/app # Monta a pasta raiz do projeto no container para hot-reloading
+  #   depends_on:
+  #     - db
+  #     - redis
+  #   networks:
+  #     - tempo-tech-network
 
   redis:
     image: redis:alpine
@@ -22,6 +38,7 @@ services:
       POSTGRES_PASSWORD: "root@pwd123"
     volumes:
       - ./postgres:/var/lib/postgresql/data
+      - ../database/db.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - tempo-tech-network
 
