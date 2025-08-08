@@ -6,8 +6,9 @@ T = TypeVar("T")
 
 class IConnectionRepository(ABC, Generic[T]):
 
+    @staticmethod
     @abstractmethod
-    def connect(self, host: str, port: str, user: str, pwd: str) -> T:
+    def connect(host: str, port: str, user: str, pwd: str) -> T:
         pass
 
 

@@ -21,4 +21,5 @@
     "editor.codeActionsOnSave": {
         "source.organizeImports": "explicit"
     },
+    "python.linting.pylintEnabled": true,
 }

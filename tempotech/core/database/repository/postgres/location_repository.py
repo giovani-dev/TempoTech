@@ -6,7 +6,6 @@ from sqlmodel import Session
 from tempotech.core.database.models.location_model import LocationModel
 from tempotech.core.interfaces.database_repository import IDefaultRepository
 from tempotech.core.schemas.location_schema import Location
-from tempotech.core.schemas.pagination_schema import Pagination
 
 
 class LocationRepository(IDefaultRepository[Location]):
