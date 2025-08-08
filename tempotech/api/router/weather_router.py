@@ -26,7 +26,7 @@ async def get_current_weather(city_name: str, request: Request) -> Weather:
 @cache(expire=600)
 async def get_history(
     city_name: Optional[str] = None, state: Optional[str] = None
-) -> list[Weather]:
+) -> Pagination[Weather]:
     """
     Retrieves a paginated list of the most recent weather queries.
 

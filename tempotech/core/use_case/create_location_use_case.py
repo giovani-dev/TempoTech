@@ -25,7 +25,7 @@ class CreateLocationUseCase(IUseCase[None]):
                 },
                 limit=1,
             )
-            if len(list(local_data)) == 0:
+            if len(local_data) == 0:
                 async for city in self._location_provider.list_cities_by_state(
                     state.state
                 ):

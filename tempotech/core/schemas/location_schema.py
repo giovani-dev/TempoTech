@@ -4,8 +4,12 @@ from pydantic import BaseModel, Field
 
 
 class Coordinates(BaseModel):
-    latitude: float = Field(description="The geographical latitude of the city.")
-    longitude: float = Field(description="The geographical longitude of the city.")
+    latitude: Optional[float] = Field(
+        description="The geographical latitude of the city."
+    )
+    longitude: Optional[float] = Field(
+        description="The geographical longitude of the city."
+    )
 
 
 class Location(BaseModel):

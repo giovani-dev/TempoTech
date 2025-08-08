@@ -6,7 +6,7 @@ from sqlmodel import Session
 
 from tempotech.core.database.models.location_model import LocationModel
 from tempotech.core.interfaces.database_repository import IDefaultRepository
-from tempotech.core.schemas.location_schema import Location
+from tempotech.core.schemas.location_schema import Coordinates, Location
 
 
 class LocationRepository(IDefaultRepository[Location]):
@@ -40,15 +40,34 @@ class LocationRepository(IDefaultRepository[Location]):
         limit: Optional[int] = None,
     ) -> list[Location]:
         statement = select(LocationModel)
+
+        if offset is not None and limit is not None:
+            statement = statement.offset(offset).limit(limit)
+
         if filters:
             for column_name, value in filters.items():
                 column = getattr(LocationModel, column_name)
                 statement = statement.where(column == value)
-        if order_by:
-            statement = statement.order_by(order_by)
-        if offset:
-            statement = statement.offset(offset)
-        if limit:
-            statement = statement.limit(limit)
+
+        statement = (
+            statement.order_by(LocationModel.city_name)
+            if not order_by
+            else statement.order_by(order_by)
+        )
+
         results = await self._session.execute(statement)
-        return results
+        locations = results.scalars().all()
+        return [
+            Location(
+                country=item.country,
+                state=item.state,
+                stateName=item.state_name,
+                cityName=item.city_name,
+                coordinates=(
+                    Coordinates(latitude=item.latitude, longitude=item.longitude)
+                    if item.latitude and item.longitude
+                    else None
+                ),
+            )
+            for item in locations
+        ]
