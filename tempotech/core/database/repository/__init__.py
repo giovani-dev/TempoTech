@@ -1,8 +1,13 @@
-from tempotech.core import config
-from tempotech.core.interfaces.database_repository import IDefaultRepository
-from tempotech.core.schemas.location_schema import Location
+"""
+Módulo de inicialização do repositório de banco de dados.
 
-# location_repository: IDefaultRepository[Location]
+Este módulo lida com a configuração e inicialização dos repositórios de banco de dados
+com base no motor de banco de dados especificado nas configurações da aplicação.
+Atualmente, ele suporta a configuração para PostgreSQL, importando os repositórios
+apropriados para este motor.
+"""
+
+from tempotech.core import config
 
 if config.DB_ENGINE == "POSTGRESQL":
     from tempotech.core.database.repository.postgres.connection_repository import (
@@ -11,12 +16,3 @@ if config.DB_ENGINE == "POSTGRESQL":
     from tempotech.core.database.repository.postgres.location_repository import (
         LocationRepository,
     )
-
-    # _connection = ConnectionRepository.connect(
-    #     host=config.DB_HOST,
-    #     port=config.DB_PORT,
-    #     user=config.DB_USER,
-    #     pwd=config.DB_PWD,
-    #     db_name=config.DB_NAME,
-    # )
-    # location_repository = LocationRepository(engine=_connection)

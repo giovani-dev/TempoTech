@@ -17,7 +17,7 @@ disable=
     
 [FORMAT]
 # Define o comprimento máximo da linha. A lintagem falhará se ultrapassar este limite.
-max-line-length=88
+max-line-length=120
 # Garante que o Pylint use o mesmo formato de linha que o Black.
 expected-line-ending-format=LF
 

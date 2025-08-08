@@ -1,3 +1,10 @@
+"""
+Módulo de repositório de conexão para PostgreSQL.
+
+Este módulo gerencia a criação de sessões de banco de dados assíncronas para
+o PostgreSQL, garantindo que as tabelas sejam criadas e que as sessões
+sejam devidamente gerenciadas dentro de um contexto.
+"""
 import urllib
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
@@ -11,9 +18,24 @@ from tempotech.core.interfaces.database_repository import IConnectionRepository
 
 
 class ConnectionRepository(IConnectionRepository[AsyncSession]):
+    """
+    Repositório de conexão para o banco de dados PostgreSQL.
+
+    Esta classe implementa a interface `IConnectionRepository` para fornecer
+    uma conexão assíncrona com o banco de dados PostgreSQL.
+    """
 
     @staticmethod
     async def connect() -> AsyncGenerator[AsyncSession, None]:
+        """
+        Cria e gerencia uma sessão de banco de dados assíncrona.
+
+        Cria o motor assíncrono, garante que o esquema do banco de dados seja
+        criado e, em seguida, cede uma sessão assíncrona para a aplicação.
+
+        Yields:
+            AsyncGenerator[AsyncSession, None]: Uma sessão de banco de dados assíncrona.
+        """
         async_engine = create_async_engine(
             f"postgresql+asyncpg://{urllib.parse.quote(config.DB_USER)}:"
             + f"{urllib.parse.quote(config.DB_PWD)}@{config.DB_HOST}:"
@@ -30,11 +52,27 @@ class ConnectionRepository(IConnectionRepository[AsyncSession]):
 
 
 class ConnectionRepositoryV2(IConnectionRepository[AsyncSession]):
+    """
+    Repositório de conexão aprimorado usando um gerenciador de contexto assíncrono.
+
+    Esta versão da classe utiliza `asynccontextmanager` para um gerenciamento
+    mais robusto e idiomático do ciclo de vida da sessão.
+    """
     # Gambiarra para trabalhar com gerenciamento de contexto
 
     @staticmethod
     @asynccontextmanager
     async def connect() -> AsyncGenerator[AsyncSession, None]:
+        """
+        Cria e gerencia uma sessão de banco de dados assíncrona usando um
+        gerenciador de contexto.
+
+        Este método garante que a conexão e a sessão sejam abertas e fechadas
+        automaticamente.
+
+        Yields:
+            AsyncGenerator[AsyncSession, None]: Uma sessão de banco de dados assíncrona.
+        """
         async_engine = create_async_engine(
             f"postgresql+asyncpg://{urllib.parse.quote(config.DB_USER)}:"
             + f"{urllib.parse.quote(config.DB_PWD)}@{config.DB_HOST}:"

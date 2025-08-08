@@ -1,3 +1,10 @@
+"""
+Módulo de modelo de dados para o clima.
+
+Define a estrutura da tabela `Weather` no banco de dados usando o SQLModel.
+Este modelo é projetado para armazenar informações de clima, como
+temperatura, umidade e velocidade do vento, para futuras consultas.
+"""
 from datetime import datetime
 from typing import Optional
 
@@ -5,6 +12,13 @@ from sqlmodel import Field, SQLModel
 
 
 class WeatherModel(SQLModel, table=True):
+    """
+    Modelo de dados para a tabela "Weather".
+
+    Esta classe mapeia as informações de clima para a tabela correspondente
+    no banco de dados, incluindo detalhes como a temperatura atual,
+    data de criação e atualização.
+    """
     __tablename__ = "Weather"
 
     id: int = Field(default=None, primary_key=True)
