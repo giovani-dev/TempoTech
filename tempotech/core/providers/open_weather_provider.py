@@ -14,10 +14,10 @@ class OpenWeatherProvider(ILocationProvider):
     def __init__(self):
         self.country = "BR"
 
-    async def list_states(self) -> AsyncGenerator[Location]:
+    async def list_states(self) -> AsyncGenerator[Location, None]:
         raise NotImplementedError
 
-    async def list_cities_by_state(self, state: str) -> Pagination[Location]:
+    async def list_cities_by_state(self, state: str) -> AsyncGenerator[Location, None]:
         raise NotImplementedError
 
     async def get_coordinates(self, location: Location) -> Location:

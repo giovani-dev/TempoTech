@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Generic, Optional, TypeVar
+from typing import AsyncGenerator, Generic, Optional, TypeVar
 
 T = TypeVar("T")
 
@@ -8,26 +8,26 @@ class IConnectionRepository(ABC, Generic[T]):
 
     @staticmethod
     @abstractmethod
-    def connect(host: str, port: str, user: str, pwd: str) -> T:
+    async def connect() -> AsyncGenerator[T, None]:
         pass
 
 
 class IDefaultRepository(ABC, Generic[T]):
 
     @abstractmethod
-    def create(self, data: T):
+    async def create(self, data: T):
         pass
 
     @abstractmethod
-    def update(self, data: T, id: int):
+    async def update(self, data: T, id: int):
         pass
 
     @abstractmethod
-    def delete(self, id: int):
+    async def delete(self, id: int):
         pass
 
     @abstractmethod
-    def search(
+    async def search(
         self,
         filters: Optional[dict] = None,
         order_by: Optional[str] = None,

@@ -5,6 +5,8 @@ from sqlmodel import Field, SQLModel
 
 
 class WeatherModel(SQLModel, table=True):
+    __tablename__ = "Weather"
+
     id: int = Field(default=None, primary_key=True)
     current_temperature: float = Field(alias="currentTemperature")
     feels_like_temperature: float = Field(alias="feelsLikeTemperature")

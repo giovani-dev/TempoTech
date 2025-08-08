@@ -1,3 +1,4 @@
+import asyncio
 from contextlib import asynccontextmanager
 from typing import AsyncIterator
 
@@ -10,13 +11,30 @@ from redis import asyncio as aioredis
 
 from tempotech.api.router import location_router, weather_router
 from tempotech.core import config
+from tempotech.core.database.repository.postgres.connection_repository import (
+    ConnectionRepository,
+)
+from tempotech.core.database.repository.postgres.location_repository import (
+    LocationRepository,
+)
+from tempotech.core.providers import coutry_provider
+from tempotech.core.use_case.create_location_use_case import CreateLocationUseCase
 
 API_VERSION = "v1"
 
 
+async def setup_db():
+    async with ConnectionRepository.connect() as session:
+        await CreateLocationUseCase(
+            location_db=LocationRepository(session), location_provider=coutry_provider
+        ).execute()
+
+
 @asynccontextmanager
 async def lifesplan(app: FastAPI) -> AsyncIterator[None]:
-    # TODO: validar se os estados de um pais estão cadastrados no banco -> fazer no startup da aplicação
+    task = asyncio.create_task(setup_db())
+    app.state.background_task = task
+
     redis = await aioredis.from_url(
         f"redis://{config.REDIS_HOST}:{config.REDIS_PORT}",
         encoding="utf-8",

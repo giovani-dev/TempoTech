@@ -5,13 +5,17 @@ CAUTION: Do not modify this file unless you know what you are doing.
 -->
 <dbmodel pgmodeler-ver="1.2.0" use-changelog="false" max-obj-count="4"
 	 gen-disabled-objs-code="false" show-sys-schemas-rects="true"
-	 last-position="191,-30" last-zoom="1" scene-rect="0,-30,1714.93,1106.8"
+	 last-position="0,-30" last-zoom="1" scene-rect="0,-30,1714.93,1106.8"
 	 default-schema="public" default-owner="postgres"
 	 layers="Default layer"
 	 active-layers="0"
 	 layer-name-colors="#000000"
 	 layer-rect-colors="#b4b4b4"
 	 show-layer-names="false" show-layer-rects="false">
+<role name="weather"
+ password="root@pwd123">
+</role>
+
 <database name="tempotech-db" is-template="false" allow-conns="true">
 </database>
 
@@ -19,13 +23,13 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </schema>
 
 <schema name="tempotech" layers="0" rect-visible="true" fill-color="#e1e1e1" name-color="#31363b">
-	<role name="postgres"/>
+	<role name="weather"/>
 </schema>
 
 <table name="Location" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
 	<schema name="tempotech"/>
-	<role name="postgres"/>
-	<position x="540" y="400"/>
+	<role name="weather"/>
+	<position x="460" y="340"/>
 	<column name="id" not-null="true"
 	 identity-type="ALWAYS" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
 		<type name="bigint" length="0"/>
@@ -55,8 +59,8 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="Weather" layers="0" collapse-mode="2" max-obj-count="9" z-value="0">
 	<schema name="tempotech"/>
-	<role name="postgres"/>
-	<position x="860" y="400"/>
+	<role name="weather"/>
+	<position x="780" y="340"/>
 	<column name="id" not-null="true"
 	 identity-type="ALWAYS" start="1" increment="1" min-value="0" max-value="2147483647" cache="1">
 		<type name="bigint" length="0"/>
@@ -89,9 +93,18 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <table name="WeatherLocation" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
 	<schema name="tempotech"/>
-	<role name="postgres"/>
-	<position x="720" y="100"/>
-</table>
+	<role name="weather"/>
+	<position x="640" y="40"/>
+
+	<customidxs object-type="column">
+		<object name="id_Location" index="0"/>
+		<object name="id_Weather" index="1"/>
+	</customidxs>
+	<customidxs object-type="constraint">
+		<object name="Location_fk" index="1"/>
+		<object name="WeatherLocation_pk" index="0"/>
+		<object name="Weather_fk" index="2"/>
+	</customidxs></table>
 
 <relationship name="Location_has_weather" type="rel1n" layers="0"
 	 src-col-pattern="{sc}_{st}"

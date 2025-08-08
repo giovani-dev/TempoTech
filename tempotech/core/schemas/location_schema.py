@@ -10,7 +10,7 @@ class Coordinates(BaseModel):
 
 class Location(BaseModel):
     country: Literal["BR"]
-    state: str = Field(alias="stateName")
+    state: str
     state_name: str = Field(alias="stateName")
     city_name: Optional[str] = Field(alias="cityName")
     coordinates: Optional[Coordinates] = Field(

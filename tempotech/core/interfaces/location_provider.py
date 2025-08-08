@@ -1,20 +1,18 @@
 from abc import ABC, abstractmethod
-from typing import AsyncGenerator, Literal, Optional
+from typing import AsyncGenerator
 
-from tempotech.core.schemas.location_schema import Coordinates, Location
-from tempotech.core.schemas.pagination_schema import Pagination
+from tempotech.core.schemas.location_schema import Location
 
 
-# TODO: QUal é o jeito correto de tipar um metodo asyncrono?
 class ILocationProvider(ABC):
     country: str
 
     @abstractmethod
-    async def list_states(self) -> AsyncGenerator[Location]:
+    async def list_states(self) -> AsyncGenerator[Location, None]:
         pass
 
     @abstractmethod
-    async def list_cities_by_state(self, state: str) -> Pagination[Location]:
+    async def list_cities_by_state(self, state: str) -> AsyncGenerator[Location, None]:
         pass
 
     @abstractmethod

@@ -19,8 +19,8 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: "weather"
-      POSTGRES_USER: "abc@123"
+      POSTGRES_DB: "tempotech-db"
+      POSTGRES_USER: "weather"
       POSTGRES_PASSWORD: "root@pwd123"
     volumes:
       - ./postgres:/var/lib/postgresql/data
